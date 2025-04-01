@@ -20,10 +20,10 @@ credentials_for_provider:
     required: true
     label:
       en_US: API Read Access Token
-      zh_Hans: API 读取访问令牌
-      zh_Hant: API 讀取存取權杖
-      ja_JP: API 読み取りアクセストークン
-      pt_BR: Token de Acesso de Leitura da API
+      zh_Hans: API 读取访问令牌 (Read Access Token)
+      zh_Hant: API 讀取存取權杖 (Read Access Token)
+      ja_JP: API 読み取りアクセストークン (Read Access Token)
+      pt_BR: Token de Acesso de Leitura da API (Read Access Token)
     help:
       en_US: Get your API Read Access Token (v4 auth) from TMDB
       zh_Hans: 从 TMDB 获取您的 API 读取访问令牌（v4 认证）
@@ -36,7 +36,7 @@ credentials_for_provider:
       zh_Hant: 請輸入您的 TMDB API 讀取存取權杖
       ja_JP: TMDB API 読み取りアクセストークンを入力してください
       pt_BR: Por favor, insira seu Token de Acesso de Leitura da API TMDB
-    url: https://www.themoviedb.org/settings/api
+    url: https://developer.themoviedb.org/reference/intro/authentication
 tools:
   - tools/tmdb_movie_search.yaml
   - tools/tmdb_tv_search.yaml
