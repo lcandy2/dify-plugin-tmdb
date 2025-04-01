@@ -1,4 +1,4 @@
-# TMDB Plugin for Dify
+# Dify Tool Plugin - The Movie Database (TMDB)
 
 This plugin allows you to search The Movie Database (TMDB) for movies, TV shows, and people. It provides comprehensive metadata and information from TMDB's extensive entertainment database.
 
@@ -11,9 +11,9 @@ This plugin allows you to search The Movie Database (TMDB) for movies, TV shows,
 ## Setup
 
 1. Register for a TMDB account at [https://www.themoviedb.org](https://www.themoviedb.org)
-2. Generate an API Read Access Token (v4 auth) at [https://www.themoviedb.org/settings/api](https://www.themoviedb.org/settings/api)
+2. Generate an API Read Access Token (v4 auth) at [https://developer.themoviedb.org/reference/intro/authentication](https://developer.themoviedb.org/reference/intro/authentication)
 3. Install the plugin in your Dify instance
-4. Configure the plugin with your TMDB API Bearer Token
+4. Configure the plugin with your TMDB API Read Access Token
 
 ## Usage
 
