@@ -34,9 +34,14 @@ class TmdbTvSearchTool(Tool):
             base_url = "https://api.themoviedb.org/3"
             search_endpoint = f"{base_url}/search/tv"
             
+            # Prepare request headers with Bearer token
+            headers = {
+                'Authorization': f'Bearer {api_key}',
+                'accept': 'application/json'
+            }
+            
             # Build query parameters
             params = {
-                "api_key": api_key,
                 "query": query,
                 "language": language,
                 "page": 1,
@@ -48,7 +53,7 @@ class TmdbTvSearchTool(Tool):
                 params["first_air_date_year"] = int(first_air_date_year)
                 
             # Make API request
-            response = requests.get(search_endpoint, params=params)
+            response = requests.get(search_endpoint, params=params, headers=headers)
             
             # Handle API response
             if response.status_code == 200:

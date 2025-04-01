@@ -34,9 +34,14 @@ class TmdbMultiSearchTool(Tool):
             base_url = "https://api.themoviedb.org/3"
             search_endpoint = f"{base_url}/search/multi"
             
+            # Prepare request headers with Bearer token
+            headers = {
+                'Authorization': f'Bearer {api_key}',
+                'accept': 'application/json'
+            }
+            
             # Build query parameters
             params = {
-                "api_key": api_key,
                 "query": query,
                 "language": language,
                 "page": 1,
@@ -44,7 +49,7 @@ class TmdbMultiSearchTool(Tool):
             }
                 
             # Make API request
-            response = requests.get(search_endpoint, params=params)
+            response = requests.get(search_endpoint, params=params, headers=headers)
             
             # Handle API response
             if response.status_code == 200:

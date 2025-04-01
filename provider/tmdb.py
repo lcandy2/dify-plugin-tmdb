@@ -11,10 +11,16 @@ class TmdbProvider(ToolProvider):
             if 'api_key' not in credentials or not credentials.get('api_key'):
                 raise ValueError("TMDB API Key is required")
             
-            # Test API key with a simple request to configuration API
+            # Test API key with a simple request to authentication API using Bearer token
             api_key = credentials.get('api_key')
+            headers = {
+                'Authorization': f'Bearer {api_key}',
+                'accept': 'application/json'
+            }
+            
             response = requests.get(
-                f"https://api.themoviedb.org/3/authentication?api_key={api_key}"
+                "https://api.themoviedb.org/3/authentication",
+                headers=headers
             )
             
             if response.status_code != 200:

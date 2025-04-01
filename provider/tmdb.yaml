@@ -15,17 +15,17 @@ credentials_for_provider:
     type: secret-input
     required: true
     label:
-      en_US: API Key
-      zh_Hans: API 密钥
-      pt_BR: Chave da API
+      en_US: API Bearer Token
+      zh_Hans: API Bearer 令牌
+      pt_BR: Token Bearer da API
     help:
-      en_US: Get your API Key from TMDB
-      zh_Hans: 从 TMDB 获取您的 API 密钥
-      pt_BR: Obtenha sua chave de API do TMDB
+      en_US: Get your API Read Access Token (v4 auth) from TMDB
+      zh_Hans: 从 TMDB 获取您的 API 读取访问令牌（v4 认证）
+      pt_BR: Obtenha seu Token de Acesso de Leitura da API (autenticação v4) do TMDB
     placeholder:
-      en_US: Please input your TMDB API Key
-      zh_Hans: 请输入您的 TMDB API 密钥
-      pt_BR: Por favor, insira sua chave de API TMDB
+      en_US: Please input your TMDB API Bearer Token
+      zh_Hans: 请输入您的 TMDB API Bearer 令牌
+      pt_BR: Por favor, insira seu Token Bearer da API TMDB
     url: https://www.themoviedb.org/settings/api
 tools:
   - tools/tmdb_movie_search.yaml
