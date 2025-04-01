@@ -6,12 +6,14 @@ label:
   en_US: The Movie Database (TMDB)
   ja_JP: The Movie Database (TMDB)
   zh_Hans: The Movie Database (TMDB)
+  zh_Hant: The Movie Database (TMDB)
   pt_BR: The Movie Database (TMDB)
 description:
-  en_US: Search and get metadata on The Movie Database (TMDB).
-  ja_JP: The Movie Database (TMDB) で映画、テレビ番組、人物のメタデータを検索して取得します。
-  zh_Hans: 从 The Movie Database (TMDB) 搜索并获取电影、电视节目和人物的数据。
-  pt_BR: Pesquise e obtenha metadados sobre filmes, programas de TV e pessoas no The Movie Database (TMDB).
+  en_US: Search for movies, TV shows and people on The Movie Database (TMDB).
+  ja_JP: The Movie Database (TMDB) で映画、テレビ番組、人物を検索します。
+  zh_Hans: 在 The Movie Database (TMDB) 上搜索电影、电视节目和人物。
+  zh_Hant: 在 The Movie Database (TMDB) 上搜尋電影、電視節目和人物。
+  pt_BR: Pesquise filmes, programas de TV e pessoas no The Movie Database (TMDB).
 icon: icon.svg
 resource:
   memory: 268435456
