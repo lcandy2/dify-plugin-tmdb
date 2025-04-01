@@ -1,0 +1,17 @@
+identity:
+  author: lcandy
+  name: tmdb
+  label:
+    en_US: tmdb
+    zh_Hans: tmdb
+    pt_BR: tmdb
+  description:
+    en_US: Search and get metadata on The Movie Database (TMDB).
+    zh_Hans: Search and get metadata on The Movie Database (TMDB).
+    pt_BR: Search and get metadata on The Movie Database (TMDB).
+  icon: icon.svg
+tools:
+  - tools/tmdb.yaml
+extra:
+  python:
+    source: provider/tmdb.py
