@@ -2,16 +2,35 @@ identity:
   author: lcandy
   name: tmdb
   label:
-    en_US: tmdb
-    zh_Hans: tmdb
-    pt_BR: tmdb
+    en_US: TMDB
+    zh_Hans: TMDB
+    pt_BR: TMDB
   description:
-    en_US: Search and get metadata on The Movie Database (TMDB).
-    zh_Hans: Search and get metadata on The Movie Database (TMDB).
-    pt_BR: Search and get metadata on The Movie Database (TMDB).
+    en_US: The Movie Database (TMDB) - Search and get metadata on movies, TV shows and people.
+    zh_Hans: 电影数据库（TMDB）- 搜索并获取电影、电视节目和人物的元数据。
+    pt_BR: O Banco de Dados de Filmes (TMDB) - Pesquise e obtenha metadados sobre filmes, programas de TV e pessoas.
   icon: icon.svg
+credentials_for_provider:
+  api_key:
+    type: secret-input
+    required: true
+    label:
+      en_US: API Key
+      zh_Hans: API 密钥
+      pt_BR: Chave da API
+    help:
+      en_US: Get your API Key from TMDB
+      zh_Hans: 从 TMDB 获取您的 API 密钥
+      pt_BR: Obtenha sua chave de API do TMDB
+    placeholder:
+      en_US: Please input your TMDB API Key
+      zh_Hans: 请输入您的 TMDB API 密钥
+      pt_BR: Por favor, insira sua chave de API TMDB
+    url: https://www.themoviedb.org/settings/api
 tools:
-  - tools/tmdb.yaml
+  - tools/tmdb_movie_search.yaml
+  - tools/tmdb_tv_search.yaml
+  - tools/tmdb_multi_search.yaml
 extra:
   python:
     source: provider/tmdb.py
