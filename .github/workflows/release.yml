@@ -1,0 +1,143 @@
+name: Release Dify Plugin
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'manifest.yaml'
+  workflow_dispatch:
+    inputs:
+      force_version:
+        description: 'Force version for release (leave empty to use manifest version)'
+        required: false
+        type: string
+
+jobs:
+  check-version-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # We need at least two commits to compare changes
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install yq for YAML processing
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O /usr/local/bin/yq
+          chmod +x /usr/local/bin/yq
+
+      - name: Check if manifest version changed
+        id: check-version
+        run: |
+          CURRENT_VERSION=$(yq '.version' manifest.yaml)
+          echo "Current version: $CURRENT_VERSION"
+          
+          # If this is a manual run with forced version, use that
+          if [ -n "${{ github.event.inputs.force_version }}" ]; then
+            echo "MANIFEST_VERSION=${{ github.event.inputs.force_version }}" >> $GITHUB_ENV
+            echo "VERSION_CHANGED=true" >> $GITHUB_ENV
+            echo "Forced version: ${{ github.event.inputs.force_version }}"
+            exit 0
+          fi
+          
+          # If workflow was triggered by push, check if version changed
+          if [ "${{ github.event_name }}" == "push" ]; then
+            git fetch origin
+            PREVIOUS_VERSION=$(git show HEAD~1:manifest.yaml | yq '.version')
+            echo "Previous version: $PREVIOUS_VERSION"
+            
+            if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+              echo "VERSION_CHANGED=true" >> $GITHUB_ENV
+              echo "Version changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+            else
+              echo "VERSION_CHANGED=false" >> $GITHUB_ENV
+              echo "Version did not change"
+            fi
+          else
+            # For workflow_dispatch without force_version
+            echo "VERSION_CHANGED=true" >> $GITHUB_ENV
+          fi
+          
+          echo "MANIFEST_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+
+      - name: Install Dify Plugin CLI tool
+        if: env.VERSION_CHANGED == 'true'
+        run: |
+          # Create directory for the tool
+          mkdir -p ~/dify-tools
+          
+          # Download the Dify Plugin CLI tool
+          ARCH=$(uname -m)
+          if [ "$ARCH" == "x86_64" ]; then
+            DIFY_ARCH="amd64"
+          elif [ "$ARCH" == "aarch64" ]; then
+            DIFY_ARCH="arm64"
+          else
+            echo "Unsupported architecture: $ARCH"
+            exit 1
+          fi
+          
+          # Download the latest version of the CLI tool
+          # Replace with the correct URL when available
+          DIFY_CLI_URL="https://github.com/langgenius/dify-plugin-cli/releases/latest/download/dify-plugin-darwin-${DIFY_ARCH}"
+          wget -O ~/dify-tools/dify-plugin $DIFY_CLI_URL || \
+            { echo "Failed to download Dify Plugin CLI tool"; exit 1; }
+          
+          chmod +x ~/dify-tools/dify-plugin
+          echo "~/dify-tools" >> $GITHUB_PATH
+
+      - name: Package Plugin
+        if: env.VERSION_CHANGED == 'true'
+        run: |
+          # Get the name from manifest.yaml
+          PLUGIN_NAME=$(yq '.name' manifest.yaml)
+          echo "Plugin name: $PLUGIN_NAME"
+          
+          # Package the plugin
+          dify-plugin plugin package . --output .
+          
+          # The output file will be named dify-plugin-{name}.difypkg
+          PACKAGE_FILE="dify-plugin-${PLUGIN_NAME}.difypkg"
+          RENAMED_PACKAGE="${PLUGIN_NAME}.difypkg"
+          
+          # Rename the package file to remove the prefix
+          if [ -f "$PACKAGE_FILE" ]; then
+            mv "$PACKAGE_FILE" "$RENAMED_PACKAGE"
+            echo "PACKAGE_FILE_PATH=$RENAMED_PACKAGE" >> $GITHUB_ENV
+            echo "Created package: $RENAMED_PACKAGE"
+          else
+            echo "Error: Package file $PACKAGE_FILE not found!"
+            exit 1
+          fi
+
+      - name: Create Release
+        if: env.VERSION_CHANGED == 'true'
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.MANIFEST_VERSION }}
+          name: Release v${{ env.MANIFEST_VERSION }}
+          body: |
+            TMDB Plugin for Dify - Release v${{ env.MANIFEST_VERSION }}
+            
+            This release contains the packaged Dify plugin for The Movie Database (TMDB) integration.
+            
+            ## Installation
+            
+            1. Download the attached `tmdb.difypkg` file
+            2. In Dify, go to Plugins and click "Install Plugin"
+            3. Upload the downloaded file
+            4. Configure with your TMDB API Read Access Token
+          files: ${{ env.PACKAGE_FILE_PATH }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
