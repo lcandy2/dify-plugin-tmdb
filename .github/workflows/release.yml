@@ -100,16 +100,26 @@ jobs:
           PLUGIN_NAME=$(yq '.name' manifest.yaml)
           echo "Plugin name: $PLUGIN_NAME"
           
-          # Package the plugin
-          dify-plugin plugin package . --output .
+          # Get repository name (folder name)
+          REPO_NAME=$(basename $(pwd))
+          echo "Repository name: $REPO_NAME"
           
-          # The output file will be named dify-plugin-{name}.difypkg
-          PACKAGE_FILE="dify-plugin-${PLUGIN_NAME}.difypkg"
+          # Move to parent directory to package the plugin
+          cd ..
+          
+          # Package the plugin using the folder name
+          dify-plugin plugin package $REPO_NAME
+          
+          # Move back to the repository directory
+          cd $REPO_NAME
+          
+          # The output file will be in parent directory with path "../{repo-name}.difypkg"
+          PACKAGE_FILE="../${REPO_NAME}.difypkg"
           RENAMED_PACKAGE="${PLUGIN_NAME}.difypkg"
           
-          # Rename the package file to remove the prefix
+          # Copy and rename the package file to remove the prefix
           if [ -f "$PACKAGE_FILE" ]; then
-            mv "$PACKAGE_FILE" "$RENAMED_PACKAGE"
+            cp "$PACKAGE_FILE" "$RENAMED_PACKAGE"
             echo "PACKAGE_FILE_PATH=$RENAMED_PACKAGE" >> $GITHUB_ENV
             echo "Created package: $RENAMED_PACKAGE"
           else
