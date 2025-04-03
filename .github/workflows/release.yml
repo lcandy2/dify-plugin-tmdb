@@ -86,7 +86,6 @@ jobs:
           fi
           
           # Download the latest version of the CLI tool
-          # Replace with the correct URL when available
           DIFY_CLI_URL="https://github.com/langgenius/dify-plugin-daemon/releases/latest/download/dify-plugin-darwin-${DIFY_ARCH}"
           wget -O ~/dify-tools/dify-plugin $DIFY_CLI_URL || \
             { echo "Failed to download Dify Plugin CLI tool"; exit 1; }
@@ -126,16 +125,16 @@ jobs:
           tag_name: v${{ env.MANIFEST_VERSION }}
           name: Release v${{ env.MANIFEST_VERSION }}
           body: |
-            TMDB Plugin for Dify - Release v${{ env.MANIFEST_VERSION }}
+            Dify Plugin - Release v${{ env.MANIFEST_VERSION }}
             
-            This release contains the packaged Dify plugin for The Movie Database (TMDB) integration.
+            This release contains the packaged Dify plugin.
             
             ## Installation
             
-            1. Download the attached `tmdb.difypkg` file
+            1. Download the attached `${{ env.PACKAGE_FILE_PATH }}` file
             2. In Dify, go to Plugins and click "Install Plugin"
             3. Upload the downloaded file
-            4. Configure with your TMDB API Read Access Token
+            4. Configure the plugin with required credentials
           files: ${{ env.PACKAGE_FILE_PATH }}
           draft: false
           prerelease: false
