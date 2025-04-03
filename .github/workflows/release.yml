@@ -87,7 +87,7 @@ jobs:
           
           # Download the latest version of the CLI tool
           # Replace with the correct URL when available
-          DIFY_CLI_URL="https://github.com/langgenius/dify-plugin-cli/releases/latest/download/dify-plugin-darwin-${DIFY_ARCH}"
+          DIFY_CLI_URL="https://github.com/langgenius/dify-plugin-daemon/releases/latest/download/dify-plugin-darwin-${DIFY_ARCH}"
           wget -O ~/dify-tools/dify-plugin $DIFY_CLI_URL || \
             { echo "Failed to download Dify Plugin CLI tool"; exit 1; }
           
